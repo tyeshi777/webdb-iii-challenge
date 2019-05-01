@@ -75,4 +75,21 @@ router.put("/:id", (req, res) => {
     });
 });
 
+router.delete("/:id", (req, res) => {
+  db("students")
+    .where({ id: req.params.id })
+    .del()
+    .then(count => {
+      if (count > 0) {
+        res.status(200).json({
+          message: `${count} ${count > 1 ? "students" : "student"} deleted`
+        });
+      } else {
+        res.status(404).json({ message: "no student with the id" });
+      }
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
 module.exports = router;
